@@ -1,8 +1,6 @@
 import express, { Request, Response } from "express";
 import Book from "../models/Book";
 
-// const express = require("express");
-// const Book = require("../models/Book");
 const router = express.Router();
 
 //GET: list
@@ -44,7 +42,7 @@ router.put("/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const book = req.body;
-    const updateBook = book.findOneAndUpdate(
+    const updateBook = await Book.findOneAndUpdate(
       {
         _id: id,
       },
@@ -52,7 +50,7 @@ router.put("/:id", async (req: Request, res: Response) => {
         $set: book,
       },
       {
-        new: true,
+        returnDocument: "after",
       },
     );
     res.status(200).json(updateBook);

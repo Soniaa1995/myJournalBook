@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Book_1 = __importDefault(require("../models/Book"));
-// const express = require("express");
-// const Book = require("../models/Book");
 const router = express_1.default.Router();
 //GET: list
 router.get("/", async (req, res) => {
@@ -47,12 +45,12 @@ router.put("/:id", async (req, res) => {
     try {
         const id = req.params.id;
         const book = req.body;
-        const updateBook = book.findOneAndUpdate({
+        const updateBook = await Book_1.default.findOneAndUpdate({
             _id: id,
         }, {
             $set: book,
         }, {
-            new: true,
+            returnDocument: "after",
         });
         res.status(200).json(updateBook);
     }
